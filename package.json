@@ -1,0 +1,48 @@
+{
+  "name": "webml-polyfill",
+  "version": "0.0.2",
+  "description": "WebML API polyfill",
+  "main": "dist/webml-polyfill.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "watch": "webpack --watch",
+    "start": "webpack-dev-server --open",
+    "build": "webpack",
+    "build-wasm": "node build.js --build-wasm",
+    "test": "node test-ci.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/intel/webml-polyfill.git"
+  },
+  "keywords": [],
+  "author": "ningxin.hu@intel.com",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/intel/webml-polyfill/issues"
+  },
+  "homepage": "https://github.com/intel/webml-polyfill#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.1",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "chromedriver": "79.0.0",
+    "fast-csv": "^2.4.1",
+    "http-server": "^0.10.0",
+    "ndarray": "^1.0.18",
+    "ndarray-ops": "^1.2.2",
+    "ndarray-squeeze": "^1.0.2",
+    "portfinder": "^1.0.20",
+    "selenium-webdriver": "^4.0.0-alpha.5",
+    "webpack": "^4.26.0",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.10",
+    "npmlog": "^4.1.2",
+    "globby": "^8.0.1",
+    "rimraf": "^2.6.2",
+    "@tensorflow/tfjs-core": "1.2.11"
+  }
+}
