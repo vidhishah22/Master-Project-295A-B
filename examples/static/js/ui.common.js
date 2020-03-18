@@ -35,7 +35,7 @@ let facialLandmarkDetectionPath = location.pathname.toLocaleLowerCase().indexOf(
 
 if (!location.search) {
   if (skeletonDetectionPath > -1) {
-    strsearch = `?prefer=none&b=none&s=image&d=0`;
+    strsearch = `?prefer=none&b=WebGL&s=camera&d=0`;
     currentBackend = 'none';
     let path = location.href;
     location.href = path + strsearch;
