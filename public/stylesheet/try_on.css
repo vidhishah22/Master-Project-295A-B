@@ -1,0 +1,42 @@
+#overlay {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+    -ms-filter: fliph;
+    /*IE*/
+    filter: fliph;
+    /*IE*/
+}
+
+#camera {
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+    -ms-filter: fliph;
+    /*IE*/
+    filter: fliph;
+    /*IE*/
+    border: 1px black dotted;
+}
+
+#tryon {
+    position: relative;
+    margin: 0px auto;
+}
+
+#start {
+    margin: 0 auto;
+    width: 100px;
+    display: block;
+}
+
+#debug {
+    width: 640px;
+    margin: 0 auto;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 11px;
+    line-height: 12px;
+}
