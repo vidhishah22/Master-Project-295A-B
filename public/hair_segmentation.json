@@ -1,0 +1,9 @@
+{
+  "source": [
+    {
+      "path": "cpu_oss_hairsegment.pbtxt",
+      "runnable": true
+    }
+  ],
+  "basePath": "/runner/demos/hair_segmentation/"
+}

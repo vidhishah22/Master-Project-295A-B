@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Graph Runner</title>
+
+<script>
+  // Quick workaround for Safari 13 bug: see b/143301307 for more details.
+  const tempUnused = WebAssembly.Module;
+</script>
+
+<script src="hair_segmentation_bin.js"></script>
+
+<script>
+  window.Module = ModuleFactory({
+    locateFile: function(f, g) {
+      return f; },
+    postRun: [],
+  });
+</script>
+<script src="hair_segmentation_loader.js"></script>
+
+<script>
+  function fix(old_graph) {
+    // Replace references to mediapipe with the old drishti references.
+    let new_graph = old_graph.replace(/\[type\.googleapis\.com\/mediapipe\.(.*)\]/g,
+      '[drishti.$1.ext]')
+    new_graph = new_graph.replace(/\bnode_options:/g, 'options:');
+    return new_graph;
+  }
+
+  function setGraph(main_graph, subgraphs) {
+    // Full-size GPU input, front-facing, and our processor will render output
+    // using OpenGL directly to canvas, unless GPU input has been disabled.
+    const videoProcessor = new VideoProcessor(1, true, true, true);
+    videoProcessor.initialize();
+
+    const cpuXenoEffects = new CpuXenoEffects();
+    cpuXenoEffects.setGlMirrorMode(true);
+    videoProcessor.setFrameProcessor(cpuXenoEffects);
+    videoProcessor.setOutputProcessor({
+      process: (detections) => {
+        let detectionString = 'No Detections.';
+        if (detections && detections.current_mspf > 0.0) {
+          detectionString = (1000.0 / detections.current_mspf).toFixed(2) + ' fps';
+        }
+        document.getElementById('message').textContent = detectionString;
+      }
+    });
+    cpuXenoEffects.setSubgraphs(subgraphs.map(d => new TextEncoder("utf-8").encode(fix(d))));
+    cpuXenoEffects.setGraph(new TextEncoder("utf-8").encode(fix(main_graph)), false);  // false, since text
+  }
+
+  window.Module['postRun'].push(() => {
+    setTimeout(() => {
+      let subgraphs = [];
+      let main_graph = "# MediaPipe graph that performs hair segmentation with TensorFlow Lite on CPU.\n# Used in the example in\n# mediapipie/examples/android/src/java/com/mediapipe/apps/hairsegmentationgpu,\n# and then ported over for CPU ML and web-side usage.\n\n# Images on GPU coming into and out of the graph.\ninput_stream: \"input_frames_gpu\"\noutput_stream: \"output_frames_gpu\"\n\nmax_queue_size: 100\n\nexecutor: {\n  name: \"\"\n  type: \"ApplicationThreadExecutor\"\n}\n\n# For selfie-mode testing, we flip horizontally here.\nnode: {\n  calculator: \"ImageTransformationCalculator\"\n  input_stream: \"IMAGE_GPU:input_frames_gpu\"\n  output_stream: \"IMAGE_GPU:flipped_input_video\"\n  node_options: {\n    [type.googleapis.com/mediapipe.ImageTransformationCalculatorOptions]: {\n      flip_horizontally: true\n    }\n  }\n}\n\n# Transforms the input image on GPU to a 512x512 image. To scale the image, by\n# default it uses the STRETCH scale mode that maps the entire input image to the\n# entire transformed image. As a result, image aspect ratio may be changed and\n# objects in the image may be deformed (stretched or squeezed), but the hair\n# segmentation model used in this graph is agnostic to that deformation.\nnode: {\n  calculator: \"ImageTransformationCalculator\"\n  input_stream: \"IMAGE_GPU:flipped_input_video\"\n  output_stream: \"IMAGE_GPU:transformed_input_video\"\n  node_options: {\n    [type.googleapis.com/mediapipe.ImageTransformationCalculatorOptions]: {\n      output_width: 512\n      output_height: 512\n    }\n  }\n}\n\n# Caches a mask fed back from the previous round of hair segmentation, and upon\n# the arrival of the next input image sends out the cached mask with the\n# timestamp replaced by that of the input image, essentially generating a packet\n# that carries the previous mask. Note that upon the arrival of the very first\n# input image, an empty packet is sent out to jump start the feedback loop.\nnode {\n  calculator: \"PreviousLoopbackCalculator\"\n  input_stream: \"MAIN:flipped_input_video\"\n  input_stream: \"LOOP:hair_mask\"\n  input_stream_info: {\n    tag_index: \"LOOP\"\n    back_edge: true\n  }\n  output_stream: \"PREV_LOOP:previous_hair_mask\"\n}\n\nnode {\n  calculator: \"ImageFrameToGpuBufferCalculator\"\n  input_stream: \"previous_hair_mask\"\n  output_stream: \"previous_hair_mask_gpu\"\n}\n\n# Embeds the hair mask generated from the previous round of hair segmentation\n# as the alpha channel of the current input image.\nnode {\n  calculator: \"SetAlphaCalculator\"\n  input_stream: \"IMAGE_GPU:transformed_input_video\"\n  input_stream: \"ALPHA_GPU:previous_hair_mask_gpu\"\n  output_stream: \"IMAGE_GPU:mask_embedded_input_video\"\n}\n\nnode {\n  calculator: \"GpuBufferToImageFrameCalculator\"\n  input_stream: \"mask_embedded_input_video\"\n  output_stream: \"mask_embedded_input_video_cpu\"\n}\n\n# Converts the transformed input image on CPU into an image tensor.\n# The zero_center option is set to false to normalize the\n# pixel values to [0.f, 1.f] as opposed to [-1.f, 1.f]. With the\n# max_num_channels option set to 4, all 4 RGBA channels are contained in the\n# image tensor.\nnode {\n  calculator: \"TfLiteConverterCalculator\"\n  input_stream: \"IMAGE:mask_embedded_input_video_cpu\"\n  output_stream: \"TENSORS:image_tensor\"\n  node_options: {\n    [type.googleapis.com/mediapipe.TfLiteConverterCalculatorOptions]: {\n      zero_center: false\n      max_num_channels: 4\n    }\n  }\n}\n\n# Generates a single side packet containing a TensorFlow Lite op resolver that\n# supports custom ops needed by the model used in this graph.\nnode {\n  calculator: \"TfLiteCustomOpResolverCalculator\"\n  output_side_packet: \"op_resolver\"\n  node_options: {\n    [type.googleapis.com/mediapipe.TfLiteCustomOpResolverCalculatorOptions]: {\n      # Note: \"use_gpu: true\" removed from here.\n    }\n  }\n}\n\n# Runs a TensorFlow Lite model on CPU that takes an image tensor and outputs a\n# tensor representing the hair segmentation, which has the same width and height\n# as the input image tensor.\nnode {\n  calculator: \"TfLiteInferenceCalculator\"\n  input_stream: \"TENSORS:image_tensor\"\n  output_stream: \"TENSORS:segmentation_tensor\"\n  input_side_packet: \"CUSTOM_OP_RESOLVER:op_resolver\"\n  node_options: {\n    [type.googleapis.com/mediapipe.TfLiteInferenceCalculatorOptions]: {\n      model_path: \"hair_segmentation.tflite\"\n      # Note: \"use_gpu: true\" removed from here.\n    }\n  }\n}\n\n# Decodes the segmentation tensor generated by the TensorFlow Lite model into a\n# mask of values in [0.f, 1.f], stored in the R channel of a CPU buffer. It also\n# takes the mask generated previously as another input to improve the temporal\n# consistency.\nnode {\n  calculator: \"TfLiteTensorsToSegmentationCalculator\"\n  input_stream: \"TENSORS:segmentation_tensor\"\n  input_stream: \"PREV_MASK:previous_hair_mask\"\n  output_stream: \"MASK:hair_mask\"\n  node_options: {\n    [type.googleapis.com/mediapipe.TfLiteTensorsToSegmentationCalculatorOptions]: {\n      tensor_width: 512\n      tensor_height: 512\n      tensor_channels: 2\n      combine_with_previous_ratio: 0.9\n      output_layer_index: 1\n    }\n  }\n}\n\nnode {\n  calculator: \"ImageFrameToGpuBufferCalculator\"\n  input_stream: \"hair_mask\"\n  output_stream: \"hair_mask_gpu\"\n}\n\n# Colors the hair segmentation with the color specified in the option.\nnode {\n  calculator: \"RecolorCalculator\"\n  input_stream: \"IMAGE_GPU:flipped_input_video\"\n  input_stream: \"MASK_GPU:hair_mask_gpu\"\n  output_stream: \"IMAGE_GPU:output_frames_gpu\"\n  node_options: {\n    [type.googleapis.com/mediapipe.RecolorCalculatorOptions]: {\n      color { r: 0 g: 0 b: 255 }\n      mask_channel: RED\n    }\n  }\n}\n";
+      setGraph(main_graph, subgraphs);
+    }, 1000);
+  });
+</script>
+
+<html>
+<head>
+    <style>
+        .abs {
+            position: absolute;
+        }
+        body {
+            font-family: 'Titillium Web', sans-serif;
+            position: absolute;
+            top: 0;
+            transform-origin: 0px 0px;
+            left: 0;
+            margin: 0;
+        }
+        #notch {
+            left: 0;
+        }
+        #message {
+            left: 0;
+            top: 0;
+            width: 100%;
+            text-align: center;
+            color: white;
+            font-size: 36px;
+            line-height: 46px;
+            position: absolute;
+        }
+        #logo {
+            bottom: 24px;
+            right: 0;
+            margin: 10px;
+            height: 20px;
+        }
+        #credit {
+            clip-path: polygon(5% 0%, 100% 0%, 100% 100%, 0% 100%);
+            color: rgba(237, 225, 187, 0.9);
+            right: 0;
+            bottom: 30px;
+            font-family: sans-serif;
+            padding: 5px 50px 5px 50px;
+            background-color: rgba(255,255,255,0.4);
+        }
+    </style>
+</head>
+<body>
+<div class="container abs">
+    <video class="abs" id="video" playsinline loop style="display: none;">
+        <!-- Uncomment below line to use canned video instead of camera. -->
+        <!-- <source src="people.mp4"  type="video/mp4"> -->
+        Loading embedded camera/video failed.
+    </video>
+    <canvas id="output" width=640 height=480></canvas>
+
+    <svg id="notch" class="abs" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+         viewBox="0 0 640 480" style="enable-background:new 0 0 640 480;" xml:space="preserve">
+      <style type="text/css">
+        .st0{fill:#FFFFFF;stroke:#000000;stroke-miterlimit:10;}
+      </style>
+        <path class="st0" d="M170.91,96"/>
+        <path d="M422.64,0L422.64,0L219.91,0v0H104.32c11.08,0.09,15.74,3.87,18.32,14.56c1.02,4.21,1.61,8.53,2.72,12.72
+        c2.81,10.58,10.56,17.27,21.42,17.3c24.38,0.08,48.75,0.12,73.13,0.12v0c67.57,0,135.15,0,202.72,0v0
+        c25.63-0.01,51.26-0.04,76.89-0.12c11.01-0.03,18.44-6.44,21.51-17.14c0.17-0.6,0.32-1.2,0.43-1.81
+        C525.11,4.81,528.41,0.69,540.82,0H422.64z"/>
+    </svg>
+    <div id="message" class="abs" id="message">Initializing...</div>
+    <div id="credit" class="abs">Powered by MediaPipe</div>
+    <img id="logo" class="abs" src="logo.png" alt=""/>
+</div>
+</body>
+
+<!-- Load helper scripts -->
+<script src="wasm_heap_writer.js"></script>
+<script src="cpu_xeno_effects.js"></script>
+<script src="video_processor.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-140696581-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-140696581-1');
+</script>
+
+</html>
