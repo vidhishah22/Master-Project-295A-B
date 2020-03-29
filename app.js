@@ -32,6 +32,10 @@ const homeRouter = require("./routes/home");
 
 app.use("/", homeRouter);
 
+const tryonRouter = require("./routes/tryon");
+
+app.use("/", tryonRouter);
+
 // // https://expressjs.com/en/starter/basic-routing.html
 // app.get("/", (request, response) => {
 //   response.sendFile(__dirname + "/views/glass_try_on.html");
