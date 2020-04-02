@@ -26,7 +26,7 @@
 <body>
 <!-- jquery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<!-- three.js r54 -->git
+<!-- three.js r54 -->
 <script src="../javascript/three.js"></script>
 <!-- clmtrack -->
 <script src="../javascript/utils.js"></script>
@@ -46,7 +46,7 @@
 
 <div class="row">
     <div class="container-fluid">
-        <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+        <div class="bgimg w3-display-container w3-animate-opacity w3-text-white" style="height: 70.688px;">
             <div class="w3-display-middle w3-padding-xlarge w3-xxlarge">
                 Virtual Try On
             </div>
@@ -63,19 +63,6 @@
                     <a class="nav-link" class="nav-link" href="#Hair" data-toggle="tab">Change Hair Color</a>
                 </li>
             </ul>
-
-
-            <!--                        <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">-->
-            <!--                            <li><a class="nav-link" href="#Glasses" data-toggle="tab">-->
-            <!--                                    <h4>Try on Glasses</h4>-->
-            <!--                                </a></li>-->
-            <!--                            <li><a class="nav-link" href="#Clothes" data-toggle="tab">-->
-            <!--                                    <h4>Try on Clothes</h4>-->
-            <!--                                </a></li>-->
-            <!--                            <li><a class="nav-link" href="#Hair" data-toggle="tab">-->
-            <!--                                    <h4>Change Hair Color</h4>-->
-            <!--                                </a></li>-->
-            <!--                        </ul>-->
             <div id="my-tab-content" class="tab-content">
                 <div class="tab-pane active" id="Glasses">
                     <h3><u>Virtual Glasses Try On</u></h3>
@@ -89,7 +76,7 @@
                                             <a href="#" title="image 1" class="thumb">
                                                 <img class="img-fluid mx-auto d-block"
                                                      src="../images/glasses/Glasses1.png"
-                                                     alt="slide 1" style="width:170px;height:90px;">
+                                                     alt="slide 1" style="width:170px;height:70px;">
                                                 <figcaption style="text-align: center">Glasses 1</figcaption>
                                             </a>
                                         </div>
@@ -101,7 +88,7 @@
                                             <a href="#" title="image 2" class="thumb">
                                                 <img class="img-fluid mx-auto d-block"
                                                      src="../images/glasses/Glasses2.png"
-                                                     alt="slide 2" style="width:170px;height:90px;">
+                                                     alt="slide 2" style="width:170px;height:70px;">
                                                 <figcaption style="text-align: center">Glasses 2</figcaption>
                                             </a>
                                         </div>
@@ -113,7 +100,7 @@
                                             <a href="#" title="image 3" class="thumb">
                                                 <img class="img-fluid mx-auto d-block"
                                                      src="../images/glasses/Glasses3.png"
-                                                     alt="slide 3" style="width:170px;height:90px;">
+                                                     alt="slide 3" style="width:170px;height:70px;">
                                                 <figcaption style="text-align: center">Glasses 3</figcaption>
                                             </a>
                                         </div>
@@ -125,7 +112,7 @@
                                             <a href="#" title="image 4" class="thumb">
                                                 <img class="img-fluid mx-auto d-block"
                                                      src="../images/glasses/Glasses4.png"
-                                                     alt="slide 4" style="width:170px;height:90px;">
+                                                     alt="slide 4" style="width:170px;height:70px;">
                                                 <figcaption style="text-align: center">Glasses 4</figcaption>
                                             </a>
                                         </div>
@@ -137,7 +124,7 @@
                                             <a href="#" title="image 5" class="thumb">
                                                 <img class="img-fluid mx-auto d-block"
                                                      src="../images/glasses/Glasses5.png"
-                                                     alt="slide 5" style="width:170px;height:90px;">
+                                                     alt="slide 5" style="width:170px;height:70px;">
                                                 <figcaption style="text-align: center">Glasses 5</figcaption>
                                             </a>
                                         </div>
@@ -526,7 +513,7 @@
                 </div>
                 <div class="tab-pane" id="Clothes">
                     <h3><u>Virtual Clothes Try On</u></h3>
-                    <p><b>Please upload an image and then select the Shirt you would like to try on.</b></p>
+                    <h5>Please upload an image and then select the Shirt you would like to try on.</h5>
                     <form action="/action_page.php">
                         <label for="imgClothes">Select image:</label>
                         <input type="file" id="imgClothes" name="imgClothes" accept="image/*">
@@ -535,7 +522,7 @@
                 </div>
                 <div class="tab-pane" id="Hair">
                     <h3><u>Virtual Hair Coloring</u></h3>
-                    <p><b>Please upload an image and then select the color of hair you would like to try.</b></p>
+                    <h5>Please upload an image and then select the color of hair you would like to try.</h5>
 
                     <form action="/action_page.php">
                         <label for="imgHair">Select image:</label>
