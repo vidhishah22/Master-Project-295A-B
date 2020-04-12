@@ -28,23 +28,22 @@ server.use(function(req, res, next) {
   next();
 });
 
+const defaultRouter = require("./routes/default");
 const homeRouter = require("./routes/home");
+const glassesTryOnRouter = require("./routes/glassesTryOn");
+const clothesTryOnRouter = require("./routes/clothesTryOn");
+const changeHairColorRouter = require("./routes/changeHairColor");
 
-server.use("/", homeRouter);
+server.use("/", defaultRouter);
+server.use("/home", homeRouter);
+server.use("/glasses-try-on", glassesTryOnRouter);
+server.use("/clothes-try-on", clothesTryOnRouter);
+server.use("/change-hair-color", changeHairColorRouter);
 
-const tryonRouter = require("./routes/tryon");
-
-server.use("/", tryonRouter);
-
-// // https://expressjs.com/en/starter/basic-routing.html
-// app.get("/", (request, response) => {
-//   response.sendFile(__dirname + "/views/glass_try_on.html");
+// // send the default array of dreams to the webpage
+// server.get("/dreams", (request, response) => {
+//   // express helps us take JS objects and send them as JSON
+//   response.json(dreams);
 // });
-
-// send the default array of dreams to the webpage
-server.get("/dreams", (request, response) => {
-  // express helps us take JS objects and send them as JSON
-  response.json(dreams);
-});
 
 module.exports = server;

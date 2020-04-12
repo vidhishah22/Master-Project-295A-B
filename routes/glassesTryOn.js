@@ -2,10 +2,10 @@ let express = require("express");
 let router = express.Router();
 
 // @route   GET /
-// @desc    Render Home Page
+// @desc    Render Glasses Try On Page
 // @access  Public
-router.get("/tryon", function(req, res, next) {
-  res.render("glass_try_on");
+router.get("/", function(req, res, next) {
+  res.render("glassesTryOn");
 });
 
 module.exports = router;

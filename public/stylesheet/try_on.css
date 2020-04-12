@@ -40,3 +40,9 @@
     font-size: 11px;
     line-height: 12px;
 }
+
+.tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: rgb(238, 250, 253);
+}
