@@ -7,11 +7,17 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const cookieParser = require("cookie-parser");
+const bodyParser = require("body-parser");
 const server = express();
 
 // View engine setup
 server.set("views", path.join(__dirname, "views"));
 server.set("view engine", "ejs");
+
+server.use(express.json({ limit: '50mb' }));
+server.use(express.urlencoded({ limit: '50mb' }));
+server.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
+server.use(bodyParser.json({ limit: '50mb' }));
 
 server.use(cookieParser());
 server.use(express.static(path.join(__dirname, "public")));
@@ -39,11 +45,5 @@ server.use("/home", homeRouter);
 server.use("/glasses-try-on", glassesTryOnRouter);
 server.use("/clothes-try-on", clothesTryOnRouter);
 server.use("/change-hair-color", changeHairColorRouter);
-
-// // send the default array of dreams to the webpage
-// server.get("/dreams", (request, response) => {
-//   // express helps us take JS objects and send them as JSON
-//   response.json(dreams);
-// });
 
 module.exports = server;

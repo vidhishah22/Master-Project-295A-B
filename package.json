@@ -10,11 +10,14 @@
     "dev": "nodemon ./bin/www"
   },
   "dependencies": {
+    "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "ejs": "^3.0.1",
     "express": "^4.17.1",
-    "m": "^1.5.6"
+    "fs": "0.0.1-security",
+    "m": "^1.5.6",
+    "request": "^2.88.2"
   },
   "engines": {
     "node": "12.x"

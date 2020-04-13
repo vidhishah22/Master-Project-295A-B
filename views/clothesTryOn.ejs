@@ -1,18 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<head>
+    <style>
+        video {
+            -webkit-transform: scaleX(-1);
+            transform: scaleX(-1);
+        }
+    </style>
+</head>
+
 <body>
     <div class="row" style="border-style: ridge;">
         <div class="container-fluid">
             <h3><u>Virtual Clothes Try On</u></h3>
-            <h5>Please upload an image and then select the Shirt you would like to try on.</h5>
-            <form action="/action_page.php">
-                <label for="imgClothes">Select image:</label>
-                <input type="file" id="imgClothes" name="imgClothes" accept="image/*">
-                <input type="submit">
-            </form>
+            <h5>Please click on "snap" button to take a picture and then select a cloth to try them on.</h5>
+            <div class="container-fluid">
+                <div id="carouselExample" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner row w-100 mx-auto" role="listbox">
+                        <div class="carousel-item col-md-3  active">
+                            <div class="panel panel-default">
+                                <div type="button" id="Glasses1" onclick="pick(1);" class="panel-thumbnail">
+                                    <a href="#" title="image 1" class="thumb">
+                                        <img class="img-fluid mx-auto d-block" src="../images/glasses/Glasses1.png"
+                                            alt="slide 1" style="width:170px;height:70px;">
+                                        <figcaption style="text-align: center">Glasses 1</figcaption>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-item col-md-3">
+                            <div class="panel panel-default">
+                                <div type="button" id="Glasses2" onclick="pick(2);" class="panel-thumbnail">
+                                    <a href="#" title="image 2" class="thumb">
+                                        <img class="img-fluid mx-auto d-block" src="../images/glasses/Glasses2.png"
+                                            alt="slide 2" style="width:170px;height:70px;">
+                                        <figcaption style="text-align: center">Glasses 2</figcaption>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-item col-md-3">
+                            <div class="panel panel-default">
+                                <div type="button" id="Glasses3" onclick="pick(3);" class="panel-thumbnail">
+                                    <a href="#" title="image 3" class="thumb">
+                                        <img class="img-fluid mx-auto d-block" src="../images/glasses/Glasses3.png"
+                                            alt="slide 3" style="width:170px;height:70px;">
+                                        <figcaption style="text-align: center">Glasses 3</figcaption>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-item col-md-3">
+                            <div class="panel panel-default">
+                                <div type="button" id="Glasses4" onclick="pick(4);" class="panel-thumbnail">
+                                    <a href="#" title="image 4" class="thumb">
+                                        <img class="img-fluid mx-auto d-block" src="../images/glasses/Glasses4.png"
+                                            alt="slide 4" style="width:170px;height:70px;">
+                                        <figcaption style="text-align: center">Glasses 4</figcaption>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-item col-md-3">
+                            <div class="panel panel-default">
+                                <div type="button" id="Glasses5" onclick="pick(5);" class="panel-thumbnail">
+                                    <a href="#" title="image 5" class="thumb">
+                                        <img class="img-fluid mx-auto d-block" src="../images/glasses/Glasses5.png"
+                                            alt="slide 5" style="width:170px;height:70px;">
+                                        <figcaption style="text-align: center">Glasses 5</figcaption>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="carousel-control-prev text-faded" href="#carouselExample" role="button" data-slide="prev"
+                        style="
+                                    background: gray;
+                                    margin-left: -1%;
+                                    height: 50%;
+                                    width: 5%;
+                                    margin-top: 2%;">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next text-faded" href="#carouselExample" role="button" data-slide="next"
+                        style="
+                                        background:gray;
+                                        margin-right: -1%;
+                                        height: 50%;
+                                        width: 5%;
+                                        margin-top: 2%;">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </div>
+            <div id="clothtryon" style="width:640px; margin:0 auto;">
+                <video id="c_camera"></video>
+                <canvas id="canvas"></canvas>
+            </div>
+            <div style="justify-content: center;display: flex;margin-top: 2%;">
+                <button onclick="snap();">Snap</button>
+                <button id="tryme">Try-On</button>
+                <a id="download"></a>
+                <div id="countdown"></div>
+                <img src="" id="tableBanner" style="display: none;" />
+            </div>
         </div>
     </div>
+    <script type="text/javascript">
+        var video = document.getElementById("c_camera");
+        var canvas = document.getElementById("canvas");
+        var context = canvas.getContext("2d");
+        var bannerImg = document.getElementById('tableBanner');
+        var downloadButton = document.getElementById("download");
+
+        $(document).ready(function () {
+            $("#tryme").click(function (e) {
+                callClothesTryOn(e);
+            });
+        });
+
+        navigator.getUserMedia =
+            navigator.getUserMedia ||
+            navigator.webkitGetUserMedia ||
+            navigator.mozGetUserMedia ||
+            navigator.msGetUserMedia;
+
+        if (navigator.getUserMedia) {
+            navigator.getUserMedia({
+                video: true
+            }, streamWebCam, throwError);
+        }
+
+        function streamWebCam(stream) {
+            console.log("Got Video.");
+            video.srcObject = stream;
+            video.play();
+        }
+
+        function throwError(e) {
+            alert(e.name);
+        }
+
+        function snap() {
+            canvas.width = video.clientWidth;
+            canvas.height = video.clientHeight;
+
+            var timeleft = 2;
+            var downloadTimer = setInterval(function function1() {
+                document.getElementById("countdown").innerHTML = timeleft +
+                    "&nbsp" + "seconds remaining";
+
+                timeleft -= 1;
+                if (timeleft <= 0) {
+                    clearInterval(downloadTimer);
+                    document.getElementById("countdown").innerHTML = "Clicking your picture!"
+                    context.drawImage(video, 0, 0);
+                    var image = canvas.toDataURL("image/jpg").replace(/^data:image\/(png|jpg);base64,/, "");
+                    localStorage.setItem("imgData", image);
+
+                    console.log("Setting bannerImg", bannerImg);
+                    // imageSrc = "data:image/jpg;base64," + dataImage; 
+                    bannerImg.src = localStorage.getItem('imgData');
+                }
+            }, 1000);
+        }
+
+
+        function callClothesTryOn(e) {
+            // Display loading gif when predict button is pressed
+            // $("#loadingPredict").show();
+            // let expID = document.getElementById("expID").value;
+
+            var image = bannerImg.src.replace('http://localhost:7000/', '');
+            console.log("bannerImg.src", image);
+            $.ajax({
+                type: "POST",
+                url: "/clothes-try-on/getClothTryOnResults",
+                data: {
+                    person: image
+                },
+                success: function (result) {
+                    console.log("Tried On Image=======>", result);
+                    // $("#loadingPredict").hide();
+                    // window.location.replace("/prediction/view/" + expID);
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>
