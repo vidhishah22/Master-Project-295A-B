@@ -18,61 +18,21 @@
             <div class="container-fluid">
                 <div id="carouselExample" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner row w-100 mx-auto" role="listbox">
-                        <div class="carousel-item col-md-3  active">
+                        <% for(var i=1; i < 7; i++) { %>
+                        <div class="carousel-item col-md-3 <%= i === 1 ? 'active' : '' %>">
                             <div class="panel panel-default">
-                                <div type="button" id="Glasses1" onclick="pick(1);" class="panel-thumbnail">
-                                    <a href="#" title="image 1" class="thumb">
-                                        <img class="img-fluid mx-auto d-block" src="../images/glasses/Glasses1.png"
-                                            alt="slide 1" style="width:170px;height:70px;">
-                                        <figcaption style="text-align: center">Glasses 1</figcaption>
+                                <div type="button" id="Cloth-<%= i %>" onclick="pickCloth(<%= i %>);"
+                                    class="panel-thumbnail">
+                                    <a href="#" title="image <%= i %>" class="thumb">
+                                        <img class="img-fluid mx-auto d-block"
+                                            src="../images/clothes/cloth_<%= i %>.jpg" alt="slide 1"
+                                            style="width:170px;height:70px;">
+                                        <figcaption style="text-align: center">Cloth <%= i %></figcaption>
                                     </a>
                                 </div>
                             </div>
                         </div>
-                        <div class="carousel-item col-md-3">
-                            <div class="panel panel-default">
-                                <div type="button" id="Glasses2" onclick="pick(2);" class="panel-thumbnail">
-                                    <a href="#" title="image 2" class="thumb">
-                                        <img class="img-fluid mx-auto d-block" src="../images/glasses/Glasses2.png"
-                                            alt="slide 2" style="width:170px;height:70px;">
-                                        <figcaption style="text-align: center">Glasses 2</figcaption>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="carousel-item col-md-3">
-                            <div class="panel panel-default">
-                                <div type="button" id="Glasses3" onclick="pick(3);" class="panel-thumbnail">
-                                    <a href="#" title="image 3" class="thumb">
-                                        <img class="img-fluid mx-auto d-block" src="../images/glasses/Glasses3.png"
-                                            alt="slide 3" style="width:170px;height:70px;">
-                                        <figcaption style="text-align: center">Glasses 3</figcaption>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="carousel-item col-md-3">
-                            <div class="panel panel-default">
-                                <div type="button" id="Glasses4" onclick="pick(4);" class="panel-thumbnail">
-                                    <a href="#" title="image 4" class="thumb">
-                                        <img class="img-fluid mx-auto d-block" src="../images/glasses/Glasses4.png"
-                                            alt="slide 4" style="width:170px;height:70px;">
-                                        <figcaption style="text-align: center">Glasses 4</figcaption>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="carousel-item col-md-3">
-                            <div class="panel panel-default">
-                                <div type="button" id="Glasses5" onclick="pick(5);" class="panel-thumbnail">
-                                    <a href="#" title="image 5" class="thumb">
-                                        <img class="img-fluid mx-auto d-block" src="../images/glasses/Glasses5.png"
-                                            alt="slide 5" style="width:170px;height:70px;">
-                                        <figcaption style="text-align: center">Glasses 5</figcaption>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+                        <% } %>
                     </div>
                     <a class="carousel-control-prev text-faded" href="#carouselExample" role="button" data-slide="prev"
                         style="
@@ -114,7 +74,7 @@
         var canvas = document.getElementById("canvas");
         var context = canvas.getContext("2d");
         var bannerImg = document.getElementById('tableBanner');
-        var downloadButton = document.getElementById("download");
+        var cloth = $("#Cloth-1").children().children().attr("src").replace('../images/clothes/', '');
 
         $(document).ready(function () {
             $("#tryme").click(function (e) {
@@ -169,6 +129,11 @@
         }
 
 
+        function pickCloth(i) {
+            cloth = $("#Cloth-" + i).children().children().attr("src").replace('../images/clothes/', '');
+            console.log("selected cloth:", cloth);
+        }
+
         function callClothesTryOn(e) {
             // Display loading gif when predict button is pressed
             // $("#loadingPredict").show();
@@ -176,16 +141,20 @@
 
             var image = bannerImg.src.replace('http://localhost:7000/', '');
             console.log("bannerImg.src", image);
+            // var cloth = document.getElementById('example_clothing').src.replace(
+            //     'http://localhost:7000/images/clothes/', '');
+
             $.ajax({
                 type: "POST",
                 url: "/clothes-try-on/getClothTryOnResults",
                 data: {
-                    person: image
+                    person: image,
+                    selectedCloth: cloth,
                 },
                 success: function (result) {
                     console.log("Tried On Image=======>", result);
                     // $("#loadingPredict").hide();
-                    // window.location.replace("/prediction/view/" + expID);
+                    window.location.replace("/clothes-try-on/view/");
                 },
                 error: function (err) {
                     console.log(err);

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    
+        <!-- jquery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+        </script>
+    
+        <!-- bootstrap -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet"
+            id="bootstrap-css">
+        <!-- project css -->
+        <link rel="stylesheet" href="../stylesheet/try_on.css">
+        <link rel="stylesheet" href="../stylesheet/carosule.css">
+        <link rel="stylesheet" href="../stylesheet/columns.css">
+        <link rel="stylesheet" href="../stylesheet/background.css">
+        <style>
+            h1,
+            h2,
+            h3,
+            h4,
+            h5,
+            h6,
+            body {
+                font-family: "Raleway"
+            }
+        </style>
+    </head>
+
+<body>
+    <div class="row">
+        <div class="container-fluid">
+            <div class="bgimg w3-display-container w3-animate-opacity w3-text-white" style="height: 70.688px;">
+                <div class="w3-display-middle w3-padding-xlarge w3-xxlarge">
+                    Virtual Try On
+                </div>
+            </div>
+            <div class="row" style="border-style: ridge;">
+                <div class="container-fluid">
+                    <h3><u>Virtual Clothes Try On</u></h3>
+                    <h5>Cloth Try On Result:</h5>
+                    <div id="clothtryon" style="width:640px; margin:0 auto;">
+                        <img src="/output/output.png" id="output"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>   
+</body>
+
+</html>

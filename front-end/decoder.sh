@@ -22,5 +22,5 @@ do
 	else
 		echo "file not found"
 	fi
-	sleep 30
+	sleep 5
 done
