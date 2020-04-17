@@ -5,8 +5,8 @@ while true
 do
 	cd .
 	echo $PWD 
-	file=temp_base64.png
-	out=temp.png
+	file=temp_base64.jpg
+	out=temp.jpg
 	echo $file
 	if [[ -f "$file" ]]
 	then
@@ -16,11 +16,11 @@ do
 		then
 			echo "removing file"
 			#rm temp.png
-			mv $file temp_bkp.jpeg
+			mv $file temp_bkp.jpg
 		fi
 		echo "file converted"
 	else
 		echo "file not found"
 	fi
-	sleep 5
+	sleep 2
 done

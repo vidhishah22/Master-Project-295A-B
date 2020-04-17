@@ -11,6 +11,7 @@
 </head>
 
 <body>
+
     <div class="row" style="border-style: ridge;">
         <div class="container-fluid">
             <h3><u>Virtual Clothes Try On</u></h3>
@@ -118,7 +119,8 @@
                     clearInterval(downloadTimer);
                     document.getElementById("countdown").innerHTML = "Clicking your picture!"
                     context.drawImage(video, 0, 0);
-                    var image = canvas.toDataURL("image/jpg").replace(/^data:image\/(png|jpg);base64,/, "");
+                    var image = canvas.toDataURL("image/jpg", 1.0).replace(/^data:image\/(png|jpg);base64,/,
+                    "");
                     localStorage.setItem("imgData", image);
 
                     console.log("Setting bannerImg", bannerImg);
@@ -136,7 +138,7 @@
 
         function callClothesTryOn(e) {
             // Display loading gif when predict button is pressed
-            // $("#loadingPredict").show();
+            $("#loadingPredict").show();
             // let expID = document.getElementById("expID").value;
 
             var image = bannerImg.src.replace('http://localhost:7000/', '');
@@ -153,7 +155,7 @@
                 },
                 success: function (result) {
                     console.log("Tried On Image=======>", result);
-                    // $("#loadingPredict").hide();
+                    $("#loadingPredict").hide();
                     window.location.replace("/clothes-try-on/view/");
                 },
                 error: function (err) {
