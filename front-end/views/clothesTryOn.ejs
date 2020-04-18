@@ -14,11 +14,12 @@
 
     <div class="row" style="border-style: none;">
         <div class="container-fluid">
-            <h3><u>Virtual Clothes Try On</u></h3>
-            <h5>Please click on "snap" button to take a picture and then select a cloth to try them on.</h5>
+            <h3 style="font-family: ABeeZee; text-transform: uppercase;">Clothes Try On</h3>
+            <h5 style="font-family: ABeeZee;">Please click on "snap" button to take a picture and then select a cloth to try them on.</h5>
             <div class="container-fluid">
                 <div id="carouselExample" class="carousel slide" data-ride="carousel">
-                    <div class="carousel-inner row w-100 mx-auto" role="listbox">
+                    <!-- w-100 -->
+                    <div class="carousel-inner row mx-auto" role="listbox"> 
                         <% for(var i=1; i < 7; i++) { %>
                         <div class="carousel-item col-md-3 <%= i === 1 ? 'active' : '' %>">
                             <div class="panel panel-default">
@@ -27,7 +28,7 @@
                                     <a href="#" title="image <%= i %>" class="thumb">
                                         <img class="img-fluid mx-auto d-block"
                                             src="../images/clothes/cloth_<%= i %>.jpg" alt="slide 1"
-                                            style="width:170px;height:70px;">
+                                            style="width:90px;height:70px;">
                                         <figcaption style="text-align: center">Cloth <%= i %></figcaption>
                                     </a>
                                 </div>
@@ -66,8 +67,8 @@
             </div>
             </div>
             <div style="justify-content: center;display: flex;margin-top: 2%;">
-                <button onclick="snap();" style="font-weight: bold;">Snap</button>&nbsp;&nbsp;&nbsp;
-                <button id="tryme" style="font-weight: bold;">Try-On</button>&nbsp;&nbsp;
+                <button onclick="snap();" style="font-weight: bold;" class="btn btn-primary">Snap</button>&nbsp;&nbsp;&nbsp;
+                <button id="tryme" style="font-weight: bold;" >Try-On</button>&nbsp;&nbsp;
                 <a id="download"></a>
                 <div id="countdown" style="font-weight: bold;"></div>
                 <img src="" id="tableBanner" style="display: none;" />

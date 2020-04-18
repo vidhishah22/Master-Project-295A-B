@@ -29,6 +29,7 @@
     <link rel="stylesheet" href="../stylesheet/carosule.css">
     <link rel="stylesheet" href="../stylesheet/columns.css">
     <link rel="stylesheet" href="../stylesheet/background.css">
+    <link href='https://fonts.googleapis.com/css?family=ABeeZee' rel='stylesheet'>
     <style>
         h1,
         h2,
@@ -46,12 +47,12 @@
     <div class="row">
         <div class="container-fluid">
             <div class="bgimg w3-display-container w3-animate-opacity w3-text-white" style="height: 70.688px;">
-                <div class="w3-display-middle w3-padding-xlarge w3-xxlarge">
+                <div class="w3-display-middle w3-padding-xlarge w3-xxlarge" style="font-family: ABeeZee; text-transform: uppercase;">
                     Virtual Try On
                 </div>
             </div>
             <div id="loadingPredict" style="display: none"></div>
-            <div class="tab" id="content">
+            <div class="tab" id="content" style="border-width: 0px;">
 
                 <!-- Nav tabs -->
                 <ul id="tabs" class="nav nav-tabs" role="tablist">
@@ -65,7 +66,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="HairColorTab" data-target="#Hair" aria-controls="Hair" data-toggle="tab"
-                            href="/change-hair-color">Change Hair Color</a>
+                            href="/change-hair-color">Try on Hair Color</a>
                     </li>
                 </ul>
 
@@ -456,7 +457,7 @@
         });
 
         $("#HairColorTab").click(function () {
-            disableCamera();
+            // disableCamera();
             // var video = document.getElementById("video");
             
         });
