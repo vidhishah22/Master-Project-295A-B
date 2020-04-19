@@ -1,17 +1,89 @@
 <!DOCTYPE html>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script>
+  var r = 0;
+  var g = 0;
+  var b = 255;
+  window.red = 0;
+  window.green = 0;
+  window.blue = 255;
+  function changeRed(redCol){
+    r = redCol
+    updateColor();
+  }
+  function changeGreen(greenCol){
+    g = greenCol
+    updateColor();
+  }
+  function changeBlue(blueCol){
+    b = blueCol
+    updateColor();
+  }
+  function updateColor(){
+    document.getElementById('change').style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")";
+  }
+
+  function updateHairColor(){
+    console.log("change color")
+    window.red = r;
+    window.green = g;
+    window.blue = b;
+    $('#hairSeg').attr('src', $('#hairSeg').attr('src'));
+  } 
+</script>
 <html lang="en">
+    <head>
+        <style>
+            .abs {
+                position: absolute;
+            }
+            #frameWrap{
+                min-height: 100px;
+                background:rgb(238, 250, 253) url("./images/loading.gif") no-repeat 50% center !important;
+            }
+        </style> 
+    </head>
 
 <body>
     <div class="row" style="border-style: ridge;">
         <div class="container-fluid">
-            <h3><u>Virtual Hair Coloring</u></h3>
-            <h5>Please upload an image and then select the color of hair you would like to try.</h5>
-
-            <form action="/action_page.php">
-                <label for="imgHair">Select image:</label>
-                <input type="file" id="imgHair" name="imgHair" accept="image/*">
-                <input type="submit">
-            </form>
+            <h3 style="font-family: ABeeZee; text-transform: uppercase;">Hair Color Try On</h3>
+            <h5 style="font-family: ABeeZee;">Please choose a color to try on your hair.</h5>
+            <div class="container-fluid" style="padding-bottom:40px">
+                      <table>
+                        <tbody>
+                        <tr>
+                          <th style="font-family: ABeeZee; color: red; text-align: center;">RED</th>
+                          <th style="font-family: ABeeZee; color: green; text-align: center;">GREEN</th>
+                          <th style="font-family: ABeeZee; color: blue; text-align: center;">BLUE</th>
+                        </tr>
+                        <tr>
+                          <td style="padding-right:10px">
+                            <input type="range" id="slideRed" min='0' max='255' class="slider" onchange="changeRed(this.value)" value="0" />
+                          </td>
+                          <td style="padding-right:10px">
+                            <input type="range" id="slideGreen" min='0' max='255' onchange="changeGreen(this.value)" value="0" />
+                          </td>
+                          <td style="padding-right:10px">
+                            <input type="range" id="slideBlue" min='0' max='255' onchange="changeBlue(this.value)" value="255" />
+                          </td>
+                          <td style="padding-right:10px">
+                            <div id=change style="width:60px; height: 20px; background-color: rgb(0, 0, 255);"></div>
+                          </td>
+                          <td style="padding-right:10px">
+                              <button type="submit" id="changeColor" onclick="updateHairColor()" class="btn btn-primary">Try Color</button>
+                          </td>
+                        </tr>
+                      </tbody>
+                      </table>
+            </div>
+            <div class='tryon' style="display: flex; justify-content: center;">
+                <div id="frameWrap">
+                    <!-- <img id="loader1" src="./images/loading.gif" width="36" height="36" alt="loading gif"/> -->
+                    <iframe id="hairSeg" src="./html/hair_segmentation.html" style="height: 480px; width: 640px; border-width: 0px;">
+                    </iframe>
+                </div>
+            </div>
         </div>
     </div>
 </body>

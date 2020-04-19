@@ -5,3 +5,4 @@ front-end/package-lock.json
 back-end/ClothesTryOn/venv
 back-end/ClothesTryOn/.idea
 .DS_Store
+.idea
