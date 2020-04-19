@@ -113,7 +113,7 @@
             canvas.width = video.clientWidth;
             canvas.height = video.clientHeight;
 
-            var timeleft = 10;
+            var timeleft = 2;
             var downloadTimer = setInterval(function function1() {
                 document.getElementById("countdown").innerHTML = timeleft +
                     "&nbsp" + "seconds remaining";
@@ -158,12 +158,13 @@
                     selectedCloth: cloth,
                 },
                 success: function (result) {
+                    timeout:5000,
                     console.log("Tried On Image=======>", result);
                     $("#loadingPredict").hide();
                     window.location.replace("/clothes-try-on/view/");
                 },
                 error: function (err) {
-                    console.log(err);
+                    console.log("Something wrong happened!!!", err);
                 }
             });
         }

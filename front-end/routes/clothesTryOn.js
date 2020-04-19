@@ -79,11 +79,11 @@ function callPythonApi(selectedCloth, req, res) {
             console.log("RESPONSE:", response.statusCode);
             
             if(response.statusCode == 201){
-              setTimeout(()=> {
+              // setTimeout(()=> {
               console.log("In timeout...")
               console.log("******** Be ready.. Your Beautiful Picture on way to be displayed..... ")
               res.redirect("/clothes-try-on/view/");
-            }, 5000) 
+            // }, 5000) 
           }
             else{
               console.log("Error", error);
