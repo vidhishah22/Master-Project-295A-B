@@ -1,5 +1,5 @@
 #!/bin/bash
-#set -x
+set -x
 
 while true
 do
@@ -18,7 +18,7 @@ do
 			echo "removing file"
 			#rm temp.png
 			mv $file temp_base64_bkp.jpg
-			# mv $out temp_bkp.jpg
+			mv $out temp_bkp.jpg
 		fi
 		echo "file converted"
 	else
