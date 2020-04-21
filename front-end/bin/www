@@ -7,6 +7,17 @@
 var app = require("../server");
 var debug = require("debug")("nodeauthentication:server");
 var http = require("http");
+var https = require('https');
+var fs = require("fs");
+
+var options = {
+  key: fs.readFileSync('./privatekey.pem'),
+  cert: fs.readFileSync('./certificate.pem')
+};
+
+// var privateKey = fs.readFileSync('./privatekey.pem').toString();
+// var certificate = fs.readFileSync('./certificate.pem').toString();
+// var credentials = crypto.createCredentials({key: privateKey, cert: certificate});
 
 /**
  * Get port from environment and store in Express.
@@ -20,7 +31,13 @@ app.set("port", port);
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+// var server = http.createServer(app);
+// var server = http.createServer(credentials);
+// server.setSecure(credentials);
+
+
+// Create an HTTPS service identical to the HTTP service.
+var server = https.createServer(options, app)
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -88,3 +105,4 @@ function onListening() {
     "\n" + "********** Server started on port number: " + bind + "\n"
   );
 }
+
