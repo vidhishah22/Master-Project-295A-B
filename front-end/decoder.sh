@@ -14,9 +14,11 @@ do
 		echo $?
 		if [[ $? == 0 ]]
 		then
+			convert $out -alpha off temp_noalpha.jpg
 			echo "removing file"
 			#rm temp.png
-			mv $file temp_bkp.jpg
+			mv $file temp_base64_bkp.jpg
+			# mv $out temp_bkp.jpg
 		fi
 		echo "file converted"
 	else
