@@ -3,7 +3,7 @@ let router = express.Router();
 let request = require("request");
 let fs = require('fs');
 let sharp = require('sharp');
-const apiBaseUrl = "http://127.0.0.1:8000/smartfit/";
+const apiBaseUrl = "http://34.106.100.93:8080/smartfit/";
 let ImageUrl = "http://localhost:7000/";
 
 // @route   GET /
