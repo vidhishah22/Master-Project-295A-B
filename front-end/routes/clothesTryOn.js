@@ -35,17 +35,20 @@ router.post("/getClothTryOnResults", function (req, res) {
       if (err) throw err;
       console.log('Saved!');
       setTimeout(()=> {
-        sharp('temp.jpg')
-        .removeAlpha()
-        .toFile('temp_rgb.jpg', function(err, info) {
-          if (err) throw err;
-          console.log('removed alpha!');
-          setTimeout(()=> {
-            console.log("***********in timeout function of callPythonAPI....")
-            callPythonApi(selectedCloth, req, res);},3000)
-          // rgb.png is a 3 channel image without an alpha channel
-        });
-      }, 4000) 
+              console.log("***********in timeout function of callPythonAPI....")
+              callPythonApi(selectedCloth, req, res);},6000)
+      // setTimeout(()=> {
+      //   sharp('temp.jpg')
+      //   .removeAlpha()
+      //   .toFile('temp_rgb.jpg', function(err, info) {
+      //     if (err) throw err;
+      //     console.log('removed alpha!');
+      //     setTimeout(()=> {
+      //       console.log("***********in timeout function of callPythonAPI....")
+      //       callPythonApi(selectedCloth, req, res);},3000)
+      //     // rgb.png is a 3 channel image without an alpha channel
+      //   });
+      // }, 4000) 
     });    
   } catch (e) {
     console.log("Error", e);
