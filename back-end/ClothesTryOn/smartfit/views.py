@@ -16,7 +16,7 @@ class ClothesTryOnView(APIView):
         print("*********")
 
         subprocess.call(
-            ['smartfit/run_smartfit.sh', '../../front-end/example_person.jpg', '../../front-end/public/images/clothes/'+selectedCloth])
+            ['smartfit/run_smartfit.sh', '../../front-end/temp_noalpha.jpg', '../../front-end/public/images/clothes/'+selectedCloth])
         return Response(status=status.HTTP_201_CREATED)
 
 
