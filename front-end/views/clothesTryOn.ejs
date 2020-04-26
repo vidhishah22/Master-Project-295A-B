@@ -47,8 +47,8 @@
 
     <div class="row" style="border-style: none;">
         <div class="container-fluid">
-            <h3><u>Virtual Clothes Try On</u></h3>
-            <h5>Please click on "snap" button to take a picture and then select a cloth to try them on.</h5>
+            <h3 style="font-family: ABeeZee; text-transform: uppercase;"><u>Virtual Clothes Try On</u></h3>
+            <h5 style="font-family: ABeeZee;">Please click on "snap" button to take a picture and then select a cloth to try them on.</h5>
             <div class="container-fluid">
                 <div id="carouselExample2" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner row w-100 mx-auto" role="listbox">
@@ -99,8 +99,8 @@
             </div>
             </div>
             <div style="justify-content: center;display: flex;margin-top: 2%;">
-                <button onclick="snap();" style="font-weight: bold;">Snap</button>&nbsp;&nbsp;&nbsp;
-                <button id="tryme" style="font-weight: bold;">Try-On</button>&nbsp;&nbsp;
+                <button onclick="snap();" style="font-weight: bold;" class="btn btn-primary">Snap</button>&nbsp;&nbsp;&nbsp;
+                <button id="tryme" style="font-weight: bold;" class="btn btn-primary">Try-On</button>&nbsp;&nbsp;
                 <a id="download"></a>
                 <div id="countdown" style="font-weight: bold;"></div>
                 <img src="" id="tableBanner" style="display: none;" />
@@ -146,7 +146,7 @@
             canvas.width = video.clientWidth;
             canvas.height = video.clientHeight;
 
-            var timeleft = 2;
+            var timeleft = 10;
             var downloadTimer = setInterval(function function1() {
                 document.getElementById("countdown").innerHTML = timeleft +
                     "&nbsp" + "seconds remaining";
@@ -178,7 +178,7 @@
             $("#loadingPredict").show();
             // let expID = document.getElementById("expID").value;
 
-            var image = bannerImg.src.replace('https://localhost:7000/', '');
+            var image = bannerImg.src.replace('https://35.235.93.87:7000/', '');
             console.log("bannerImg.src", image);
             // var cloth = document.getElementById('example_clothing').src.replace(
             //     'http://localhost:7000/images/clothes/', '');
