@@ -1,0 +1,17 @@
+body,
+        h1 {
+            font-family: "Raleway", sans-serif
+        }
+
+        body,
+        html {
+            height: 100%;
+            background-color: rgb(238, 250, 253);
+        }
+
+        .bgimg {
+            background-image: url('../images/banner-1.jpg');
+            min-height: 10%;
+            background-position: center;
+            background-size: cover;
+        }

@@ -1,0 +1,16 @@
+
+> hello-express@0.0.1 start /home/vidhisparashar/ms-proj/Master-Project-295A-B/front-end
+> node ./bin/www
+
+Sun, 19 Apr 2020 23:32:58 GMT body-parser deprecated undefined extended: provide extended option at server.js:18:20
+
+********** Server started on port number: port 7000
+
+selectedCloth cloth_1.jpg
+Saved!
+removed alpha!
+***********in timeout function of callPythonAPI....
+Python ML Api called
+RESPONSE: 201
+In timeout...
+******** Be ready.. Your Beautiful Picture on way to be displayed..... 
