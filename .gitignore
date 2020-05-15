@@ -6,3 +6,11 @@ back-end/ClothesTryOn/venv
 back-end/ClothesTryOn/.idea
 .DS_Store
 .idea
+back-end/ClothesTryOn/smartfit/human_parsing/LIP_JPPNet/output/parsing/val/*
+front-end/input/*
+front-end/noalpha/*
+front-end/public/output/*
+back-end/ClothesTryOn/smartfit/inputs/*
+back-end/ClothesTryOn/smartfit/human_parsing/LIP_JPPNet
+back-end/ClothesTryOn/smartfit/pose_estimation/keras_Realtime_MultiPerson_Pose_Estimation
+back-end/ClothesTryOn/smartfit/try-on/VITON

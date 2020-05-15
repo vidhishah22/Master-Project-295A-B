@@ -3,14 +3,19 @@ set -e
 
 # Script that takes an image of a person and a clothing item and returns an image of the person wearing the clothing to the ./output/ directory.
 
-if [ "$#" -ne 2 ]; then
-    echo "ERROR: run_smartfit.sh requires two inputs: relative path to the person image and relative path to the clothing image."
+if [ "$#" -ne 3 ]; then
+    echo "ERROR: run_smartfit.sh requires three inputs: relative path to the person image and relative path to the clothing image."
     exit
 fi
 
 # Set variables
 person_img=$PWD"/"$1
 clothing_img=$PWD"/"$2
+id=$3
+
+echo "$id"
+
+cd ../back-end/ClothesTryOn/
 
 # Clean directories
 rm -f  smartfit/human_parsing/output/*
@@ -43,5 +48,9 @@ printf "\nRunning image try-on...\n\n"
 cd try-on/
 ./run_try-on.sh $person_img $clothing_img
 
+person_name=$(basename $person_img)
+clothing_name=$(basename $clothing_img)
 # Copy output to main output directory
-cp VITON/results/stage2/images/*final.png ../../../../front-end/public/output/output.png
+cp "VITON/results/stage2/images/${person_name}_${clothing_name}_final.png" "../../../../front-end/public/output/output_$id.png"
+echo "\n *******DONEEEEEEEEEEE********** \n"
+exit 0

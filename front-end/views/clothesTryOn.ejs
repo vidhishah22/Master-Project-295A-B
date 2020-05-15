@@ -99,8 +99,8 @@
             </div>
             </div>
             <div style="justify-content: center;display: flex;margin-top: 2%;">
-                <button onclick="snap();" style="font-weight: bold;" class="btn btn-primary">Snap</button>&nbsp;&nbsp;&nbsp;
-                <button id="tryme" style="font-weight: bold;" class="btn btn-primary">Try-On</button>&nbsp;&nbsp;
+                <button id="snap"  onclick="snap();" style="font-weight: bold;" class="btn btn-primary">Snap</button>&nbsp;&nbsp;&nbsp;
+                <button id="tryme" style="font-weight: bold;" class="btn btn-primary" disabled>Try-On</button>&nbsp;&nbsp;
                 <a id="download"></a>
                 <div id="countdown" style="font-weight: bold;"></div>
                 <img src="" id="tableBanner" style="display: none;" />
@@ -146,7 +146,7 @@
             canvas.width = video.clientWidth;
             canvas.height = video.clientHeight;
 
-            var timeleft = 10;
+            var timeleft = 4;
             var downloadTimer = setInterval(function function1() {
                 document.getElementById("countdown").innerHTML = timeleft +
                     "&nbsp" + "seconds remaining";
@@ -163,6 +163,7 @@
                     console.log("Setting bannerImg", bannerImg);
                     // imageSrc = "data:image/jpg;base64," + dataImage; 
                     bannerImg.src = localStorage.getItem('imgData');
+	            document.getElementById("tryme").disabled = false;
                 }
             }, 1000);
         }
@@ -174,15 +175,16 @@
         }
 
         function callClothesTryOn(e) {
+	    document.getElementById("tryme").disabled = true;
+            document.getElementById("snap").disabled = true;
             // Display loading gif when predict button is pressed
             $("#loadingPredict").show();
             // let expID = document.getElementById("expID").value;
-
-            var image = bannerImg.src.replace('https://35.235.93.87:7000/', '');
+            var rep = window.location.origin+'/'
+	    var image = bannerImg.src.replace(rep, '');
             console.log("bannerImg.src", image);
             // var cloth = document.getElementById('example_clothing').src.replace(
             //     'http://localhost:7000/images/clothes/', '');
-
             $.ajax({
                 type: "POST",
                 url: "/clothes-try-on/getClothTryOnResults",
@@ -191,15 +193,31 @@
                     selectedCloth: cloth,
                 },
                 success: function (result) {
-                    timeout:5000,
-                    console.log("Tried On Image=======>", result);
-                    $("#loadingPredict").hide();
-                    window.location.replace("/clothes-try-on/view/");
+                    console.log(result)
+                    setTimeout(() => {
+                        showResults(result.id)
+                    }, 30000);
+                    // obj = JSON.parse(result);
                 },
                 error: function (err) {
                     console.log("Something wrong happened!!!", err);
                 }
             });
+        }
+
+        function showResults(id) {
+            $.get(`/clothes-try-on/ready?id=${id}`,(data) => {
+		console.log(data);
+                if (data.isReady === true){
+                    timeout:5000,
+                    //console.log("Tried On Image=======>", result);
+                    $("#loadingPredict").hide();
+                    window.location.replace(`/clothes-try-on/view/?id=${id}`);
+                }
+                else setTimeout(()=>{
+                    showResults(id)
+                }, 30000);
+            })
         }
     </script>
 </body>
