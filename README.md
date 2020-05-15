@@ -33,9 +33,11 @@ $openssl x509 -req -in certrequest.csr -signkey privatekey.pem -out certificate.
 ```
 
 Create the following folders with specified names  - 
-`./front-end/input `
-`./front-end/noalpha`
-`./front-end/public/output`
+```shell
+./front-end/input
+./front-end/noalpha
+./front-end/public/output
+```
 
 RabbitMQ SetUp
 Install RabbitMQ - `sudo apt-get install rabbitmq-server`
