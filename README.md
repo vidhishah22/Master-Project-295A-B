@@ -7,7 +7,7 @@
 Virtual try-on is becoming a way to make online shopping more appealing as it enhances
 interaction between customers and E-commerce sites. Virtual try-on is enhancing customers' experience by allowing them to try-on products even while browsing products online, which traditionally could not do so. The goal of the Real Time Augmented Reality for Virtual TryOn project is to provide E-commerce customers with a system that allows them to virtually try on a variety of products in real time while preserving their privacy. By simply accessing the site, customers can experience try-on features with their webcam live video and image. It can run on any platform by having a capability of cross-platform support.
 
-<img src="https://imgur.com/O1ELiAC"/>
+<img src="https://imgur.com/O1ELiAC.png">
 
 ### Installation
 
