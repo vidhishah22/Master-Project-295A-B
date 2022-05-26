@@ -11,5 +11,5 @@ Pillow==5.1.0
 pyzmq==17.0.0
 scipy==1.1.0
 six==1.11.0
-tensorflow==1.15.2
+tensorflow==2.7.2
 djangorestframework
